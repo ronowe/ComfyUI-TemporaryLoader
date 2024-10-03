@@ -17,22 +17,21 @@ class LoadTempLoRA:
         return {
             "required": {
                 "model": ("MODEL",),
-                "clip": ("CLIP", ),
                 "ckpt_url": ("STRING", {"default": ""}),
                 "ckpt_type": (["auto", "safetensors", "other"], {"default": "auto"}),
                 "download_split": ("INT", {"default": 4, "min": 1, "max": 8, "step": 1}),
                 "strength_model": ("FLOAT", {"default": 1.0, "min": -20.0, "max": 20.0, "step": 0.01}),
-                "strength_clip": ("FLOAT", {"default": 1.0, "min": -20.0, "max": 20.0, "step": 0.01}),
+           
             },
         }
-    RETURN_TYPES = ("MODEL", "CLIP")
+    RETURN_TYPES = ("MODEL")
     FUNCTION = "load_lora"
 
     CATEGORY = "temporary_loaders"
 
-    def load_lora(self, model, clip, ckpt_url, ckpt_type, download_split, strength_model, strength_clip):
-        if strength_model == 0 and strength_clip == 0:
-            return (model, clip)
+    def load_lora(self, model, ckpt_url, ckpt_type, download_split, strength_model):
+        if strength_model == 0:
+            return (model)
 
         lora = None
         if self.loaded_lora is not None:
